@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  build: {
+    build: {
+    base: '/game1/',
     outDir: 'docs', // 🟡 build гаралтын фолдерыг docs болгов
   }
 })
