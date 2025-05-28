@@ -94,7 +94,7 @@ class GameScene extends Phaser.Scene {
         fill: true
       }
     });
-    this.timedEvent = this.time.delayedCall(15000, this.gameOver, [], this);
+    this.timedEvent = this.time.delayedCall(30000, this.gameOver, [], this);
     this.emiter = this.add.particles(0, 0, 'particle', {
       speed: 100,
       gravityY: speedDown - 200,
@@ -173,7 +173,7 @@ class GameScene extends Phaser.Scene {
       duration: 100,
       yoyo: true,
     });
-  
+    this.coinMusic.play();
   }
   gameOver() {
     if (this.point >= 10) {
