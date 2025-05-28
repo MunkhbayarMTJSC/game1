@@ -29,6 +29,8 @@ class GameScene extends Phaser.Scene {
     this.coinMusic;
     this.bgMusic;
     this.emiter;
+    this.leftButton;
+    this.rightButton;
   }
 
   preload() {
@@ -38,14 +40,17 @@ class GameScene extends Phaser.Scene {
     this.load.image('particle', '/assets/money.png');
     this.load.audio('bgMusic', '/assets/bgMusic.mp3');
     this.load.audio('coin', '/assets/coin.mp3');
+    this.load.image('left', '/assets/left-arrow.png');
+    this.load.image('right', '/assets/right-arrow.png');
   }
 
   create() {
+    this.isLeftDown = false;
+    this.isRightDown = false;
     this.point = 0;
     this.coinMusic = this.sound.add('coin');
     this.bgMusic = this.sound.add('bgMusic');
-    this.bgMusic.play();
-    this.bgMusic.stop();
+    this.bgMusic.play({ loop: true });
 
     this.add.image(0, 0, 'bg').setOrigin(0, 0);
     this.player = this.physics.add.image(0, sizes.height - 100, 'basket').setOrigin(0, 0);
@@ -96,7 +101,39 @@ class GameScene extends Phaser.Scene {
       scale: 0.1,
       duration: 100,
       emitting: false,
-    })
+    });
+    
+    this.leftButton = this.add.circle(60, 440, 35, 0x000000, 0.4)
+      .setInteractive()
+      .on('pointerdown', () => this.isLeftDown = true)
+      .on('pointerup', () => this.isLeftDown = false)
+      .on('pointerout', () => this.isLeftDown = false)
+      .on('pointerdown', () => {
+        this.tweens.add({
+          targets: this.leftButton,
+          scale: 0.9,
+          duration: 100,
+          yoyo: true,
+          ease: 'Power1'
+        });
+        this.player.setVelocityX(-this.playerSpeed);
+      }); // Хуруу гарсан үед зогсоох
+
+      this.rightButton = this.add.circle(440, 440, 35, 0x000000, 0.4)
+      .setInteractive()
+      .on('pointerdown', () => this.isRightDown = true)
+      .on('pointerup', () => this.isRightDown = false)
+      .on('pointerout', () => this.isRightDown = false)
+      .on('pointerdown', () => {
+        this.tweens.add({
+          targets: this.rightButton,
+          scale: 0.9,
+          duration: 100,
+          yoyo: true,
+          ease: 'Power1'
+        });
+        this.player.setVelocityX(-this.playerSpeed);
+      });
   }
 
   update() {
@@ -108,13 +145,14 @@ class GameScene extends Phaser.Scene {
     }
 
     const { left, right } = this.cursor;
-    if (left.isDown) {
+    if (left.isDown || this.isLeftDown) {
       this.player.setVelocityX(-this.playerSpeed);
-    } else if (right.isDown) {
+    } else if (right.isDown || this.isRightDown) {
       this.player.setVelocityX(this.playerSpeed);
     } else {
       this.player.setVelocityX(0);
     }
+
 
     this.textScore.setText(`❤️ ${this.point}`);
     this.emiter.startFollow(this.player, this.player.width / 2, this.player.height / 2, true);
@@ -128,7 +166,7 @@ class GameScene extends Phaser.Scene {
     this.target.setY(0);
     this.target.setX(this.getRandomX());
     this.point++;
-    this.emiter.start();
+    this.emiter.explode(10, this.player.x, this.player.y);
     this.tweens.add({
       targets: this.textScore,
       scale: 1.3,
