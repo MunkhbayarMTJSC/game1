@@ -193,6 +193,10 @@ const config = {
   width: sizes.width,
   height: sizes.height,
   canvas: gameCanvas,
+  scale: {
+    mode: Phaser.Scale.FIT, // 📱 дэлгэцэд тааруулж scale хийх
+    autoCenter: Phaser.Scale.CENTER_BOTH, // 🟡 төвд нь байрлуулах
+  },
   physics: {
     default: "arcade",
     arcade: {
