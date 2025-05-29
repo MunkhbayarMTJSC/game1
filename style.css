@@ -13,13 +13,7 @@
 
 html,
 body {
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
   height: 100%;
-  width: 100%;
-  background: #000;
-  /* хүсвэл арын өнгийг өөрчил */
 }
 
 body {
@@ -44,31 +38,35 @@ main {
 }
 
 #gameCanvas {
-  border: 1px solid red;
-  position: absolute;
-  margin: 0 auto;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  margin: 0;
   padding: 0;
-  max-width: 100vw;
-  max-height: 100vh;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
+  border: none;
+  position: absolute;
+  /* canvas-г дэлгэц дээр тогтоож байрлуулна */
+  top: 0;
+  left: 0;
   z-index: 1;
+  /* Ар талд */
 }
 
 .gameUI {
-  width: 100%;
-  height: 100%;
-  background-color: var(--accClr);
+  position: absolute;
+  /* Canvas дээр давхарлана */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(13, 13, 53, 0.6);
+  /* бага зэрэг нэвт харагддаг */
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 2;
+  /* Дээр нь */
+  flex-direction: column;
 }
 
 .gameUI * {
